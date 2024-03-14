@@ -17,6 +17,6 @@ void Setup_PWM(gpt_instance_ctrl_t *GPT_To_Use, uint32_t pin, double TargetDutyC
     R_GPT_Start(GPT_To_Use);
     return;
 }
-
+ 
     uint32_t period_us
     UNUSED(period_us);
