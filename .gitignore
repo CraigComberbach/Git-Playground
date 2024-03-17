@@ -72,6 +72,7 @@ dkms.conf
 *.bak
 
 # Ceedling
+build/
 build/artifacts
 build/gcov
 build/logs 
