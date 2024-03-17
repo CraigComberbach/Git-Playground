@@ -1,0 +1,11 @@
+//Buttons Debounce Library
+#define BUTTON_CONTROL_MAJOR 2
+#define BUTTON_CONTROL_MINOR 0
+#define BUTTON_CONTROL_PATCH 0
+
+//Buttons
+enum BUTTON_DEFINITIONS
+{
+	BUTTON_,
+	NUMBER_OF_BUTTONS
+};
