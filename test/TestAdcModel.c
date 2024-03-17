@@ -15,6 +15,7 @@ void tearDown(void)
 
 void testDoGetSampleShouldReturn_FALSE_WhenTaskSchedulerReturns_FALSE(void)
 {
+	int x = 5;
 	TaskScheduler_DoAdc_ExpectAndReturn(FALSE);
 	TEST_ASSERT_FALSE(AdcModel_DoGetSample());
 }
