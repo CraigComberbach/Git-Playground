@@ -1,0 +1,3 @@
+[submodule "src/ButtonControl"]
+	path = src/ButtonControl
+	url = https://github.com/CraigComberbach/ButtonControl.git
