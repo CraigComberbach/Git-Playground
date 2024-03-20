@@ -8,19 +8,19 @@
 ErrorCode_t ReturnedValue;
 
 /**********Happy Path Definitions**********/
-int (*Happy_ReadButtonFunction)(int) = NULL;
-int Happy_ButtonToReference = 3;
+ErrorCode_t (*Happy_ReadButtonFunction)(ButtonObjects_t) = NULL;
+uint8_t Happy_ButtonToReference = 3;
 ButtonObjects_t Happy_ButtonID = 0;
-int Happy_ThresholdForPress_mS = 5;
-int Happy_ThresholdForLongPress_mS = 7;
-void (*Happy_NotificationFunction)(ButtonObjects_t, ButtonStatus_t) = NULL;
+uint16_t Happy_ThresholdForPress_mS = 5;
+uint16_t Happy_ThresholdForLongPress_mS = 7;
+void (*Happy_NotificationFunction)(ButtonObjects_t, ButtonStatus_t) = NO_NOTIFICATION;
 ButtonDefaultState_t Happy_DefaultState = NORMALLY_LOW;
 
 /*************Fake Functions************/
-int Fake_ReadButtonFunction(int dummy);
+ErrorCode_t Fake_ReadButtonFunction(ButtonObjects_t dummy);
 void Fake_NotificationFunction(ButtonObjects_t Object, ButtonStatus_t Status);
 
-int Fake_ReadButtonFunction(int dummy)
+ErrorCode_t Fake_ReadButtonFunction(ButtonObjects_t dummy)
 {
 	return 0;
 }
@@ -34,6 +34,11 @@ void setUp(void)
 	ReturnedValue = 0;
 	Happy_ReadButtonFunction = &Fake_ReadButtonFunction;
 	Happy_NotificationFunction = &Fake_NotificationFunction;
+	Happy_ButtonToReference = 3;
+	ButtonObjects_t Happy_ButtonID = 0;
+	Happy_ThresholdForPress_mS = 5;
+	Happy_ThresholdForLongPress_mS = 7;
+	Happy_DefaultState = NORMALLY_LOW;
 }
 
 void tearDown(void)
@@ -105,17 +110,15 @@ void test_Initialize_Button_InvalidButtonID_High(void)
 	TEST_ASSERT_TRUE(ReturnedValue == ERANGE);
 }
 
-void test_Initialize_Button_ExtremeValidThresholds(void)
-{
-	TEST_IGNORE();
-}
-
-void test_Initialize_Button_ExtremeInvalidThresholds(void)
-{
-	TEST_IGNORE();
-}
-
 void test_Initialize_Button_InvalidDefaultState(void)
 {
-	TEST_IGNORE();
+	ReturnedValue = Initialize_Button(Happy_ReadButtonFunction,
+									  Happy_ButtonToReference,
+									  Happy_ButtonID,
+									  Happy_ThresholdForPress_mS,
+									  Happy_ThresholdForLongPress_mS,
+									  Happy_NotificationFunction,
+									  3);
+
+	TEST_ASSERT_TRUE(ReturnedValue == ERANGE);
 }
