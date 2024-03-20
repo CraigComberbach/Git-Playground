@@ -55,7 +55,7 @@ void test_Initialize_Button_HappyPath(void)
 									  Happy_NotificationFunction,
 									  Happy_DefaultState);
 
-	TEST_ASSERT_TRUE(ReturnedValue == 0);
+	TEST_ASSERT_TRUE(ReturnedValue == SUCCESS);
 }
 
 void test_Initialize_Button_ReadButtonIsNull(void)
@@ -81,7 +81,7 @@ void test_Initialize_Button_NotificationIsNull(void)
 									  NULL,
 									  Happy_DefaultState);
 
-	TEST_ASSERT_TRUE(ReturnedValue == 0);
+	TEST_ASSERT_TRUE(ReturnedValue == SUCCESS);
 }
 
 void test_Initialize_Button_InvalidButtonID_Low(void)
@@ -121,4 +121,17 @@ void test_Initialize_Button_InvalidDefaultState(void)
 									  3);
 
 	TEST_ASSERT_TRUE(ReturnedValue == ERANGE);
+}
+
+void test_Initialize_Button_LongpressThresholdIsGreaterThanPressThreshold(void)
+{
+	ReturnedValue = Initialize_Button(Happy_ReadButtonFunction,
+									  Happy_ButtonToReference,
+									  Happy_ButtonID,
+									  5,
+									  5,
+									  Happy_NotificationFunction,
+									  Happy_DefaultState);
+
+	TEST_ASSERT_TRUE(ReturnedValue == EINVAL);
 }

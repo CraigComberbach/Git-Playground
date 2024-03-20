@@ -13,3 +13,4 @@ typedef enum
 } ButtonObjects_t;
 
 typedef int_fast8_t ErrorCode_t;
+#define SUCCESS 0
