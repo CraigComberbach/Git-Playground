@@ -42,8 +42,15 @@ void tearDown(void)
 
 void test_Initialize_Button_HappyPath(void)
 {
-	Initialize_Button(NULL, 3, BUTTON_, 5, 7, NULL, 11);
-	TEST_IGNORE();
+	ReturnedValue = Initialize_Button(Happy_ReadButtonFunction,
+									  Happy_ButtonToReference,
+									  Happy_ButtonID,
+									  Happy_ThresholdForPress_mS,
+									  Happy_ThresholdForLongPress_mS,
+									  Happy_NotificationFunction,
+									  Happy_DefaultState);
+
+	TEST_ASSERT_TRUE(ReturnedValue == 0);
 }
 
 void test_Initialize_Button_ReadButtonIsNull(void)

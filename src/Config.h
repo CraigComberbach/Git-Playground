@@ -12,4 +12,4 @@ typedef enum
 	NUMBER_OF_BUTTONS
 } ButtonObjects_t;
 
-typedef int_fast16_t ErrorCode_t;
+typedef int_fast8_t ErrorCode_t;
