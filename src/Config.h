@@ -12,8 +12,8 @@
 typedef enum
 {
 	BUTTON_,
-	NUMBER_OF_BUTTONS
-} ButtonObjects_t;
+	NUMBER_OF_BUTTON_OBJECTS
+} Button_ObjectList_t;
 
 typedef int_fast8_t ErrorCode_t;
 #define SUCCESS 0

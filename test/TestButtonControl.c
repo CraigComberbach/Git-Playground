@@ -8,23 +8,24 @@
 ErrorCode_t ReturnedValue;
 
 /**********Happy Path Definitions**********/
-ErrorCode_t (*Happy_ReadButtonFunction)(ButtonObjects_t) = NULL;
+ErrorCode_t (*Happy_ReadButtonFunction)(Button_ObjectList_t) = NULL;
 uint8_t Happy_ButtonToReference = 3;
-ButtonObjects_t Happy_ButtonID = 0;
+Button_ObjectList_t Happy_ButtonID = 0;
 uint16_t Happy_ThresholdForPress_mS = 5;
 uint16_t Happy_ThresholdForLongPress_mS = 7;
-void (*Happy_NotificationFunction)(ButtonObjects_t, ButtonStatus_t) = NO_NOTIFICATION;
+void (*Happy_NotificationFunction)(Button_ObjectList_t, ButtonStatus_t) = NO_NOTIFICATION;
 ButtonDefaultState_t Happy_DefaultState = NORMALLY_LOW;
+Button_Object_t *ButtonObject = NULL;
 
 /*************Fake Functions************/
-ErrorCode_t Fake_ReadButtonFunction(ButtonObjects_t dummy);
-void Fake_NotificationFunction(ButtonObjects_t Object, ButtonStatus_t Status);
+ErrorCode_t Fake_ReadButtonFunction(Button_ObjectList_t dummy);
+void Fake_NotificationFunction(Button_ObjectList_t Object, ButtonStatus_t Status);
 
-ErrorCode_t Fake_ReadButtonFunction(ButtonObjects_t dummy)
+ErrorCode_t Fake_ReadButtonFunction(Button_ObjectList_t dummy)
 {
 	return 0;
 }
-void Fake_NotificationFunction(ButtonObjects_t Object, ButtonStatus_t Status)
+void Fake_NotificationFunction(Button_ObjectList_t Object, ButtonStatus_t Status)
 {
 	return;
 }
@@ -35,10 +36,11 @@ void setUp(void)
 	Happy_ReadButtonFunction = &Fake_ReadButtonFunction;
 	Happy_NotificationFunction = &Fake_NotificationFunction;
 	Happy_ButtonToReference = 3;
-	ButtonObjects_t Happy_ButtonID = 0;
+	Button_ObjectList_t Happy_ButtonID = 0;
 	Happy_ThresholdForPress_mS = 5;
 	Happy_ThresholdForLongPress_mS = 7;
 	Happy_DefaultState = NORMALLY_LOW;
+	ButtonObject = NULL;
 }
 
 void tearDown(void)
@@ -101,7 +103,7 @@ void test_Initialize_Button_InvalidButtonID_High(void)
 {
 	ReturnedValue = Initialize_Button(Happy_ReadButtonFunction,
 									  Happy_ButtonToReference,
-									  NUMBER_OF_BUTTONS,
+									  NUMBER_OF_BUTTON_OBJECTS,
 									  Happy_ThresholdForPress_mS,
 									  Happy_ThresholdForLongPress_mS,
 									  Happy_NotificationFunction,
@@ -134,4 +136,41 @@ void test_Initialize_Button_LongpressThresholdIsGreaterThanPressThreshold(void)
 									  Happy_DefaultState);
 
 	TEST_ASSERT_TRUE(ReturnedValue == EINVAL);
+}
+
+void test_Button_Aquire_Object_HappyPath(void)
+{
+	ReturnedValue = Button_Aquire_Object(ButtonObject, Happy_ButtonID);
+
+	TEST_ASSERT_TRUE(ReturnedValue == SUCCESS);
+}
+
+void test_Button_Aquire_Object_InvalidButtonID_Low(void)
+{
+	ReturnedValue = Button_Aquire_Object(&ButtonObject, -1);
+
+	TEST_ASSERT_TRUE(ReturnedValue == ERANGE);
+}
+
+void test_Button_Aquire_Object_InvalidButtonID_High(void)
+{
+	ReturnedValue = Button_Aquire_Object(&ButtonObject, NUMBER_OF_BUTTON_OBJECTS);
+
+	TEST_ASSERT_TRUE(ReturnedValue == ERANGE);
+}
+
+void test_Button_Aquire_Object_ButtonObjectNotNull(void)
+{
+	Button_Object_t *LocalButtonObject = &ButtonObject;
+	ReturnedValue = Button_Aquire_Object(&LocalButtonObject, Happy_ButtonID);
+
+	TEST_ASSERT_TRUE(ReturnedValue == EINVAL);
+}
+
+void test_Button_Aquire_Object_AlreadyOwned(void)
+{
+	Button_Aquire_Object(&ButtonObject, Happy_ButtonID);
+	ReturnedValue = Button_Aquire_Object(&ButtonObject, Happy_ButtonID);
+
+	TEST_ASSERT_TRUE(ReturnedValue == EBUSY);
 }
