@@ -1,3 +1,6 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
 #include <stdint.h>
 
 //Buttons Debounce Library
@@ -14,3 +17,5 @@ typedef enum
 
 typedef int_fast8_t ErrorCode_t;
 #define SUCCESS 0
+
+#endif CONFIG_H//CONFIG_H
