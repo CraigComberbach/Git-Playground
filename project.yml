@@ -177,7 +177,7 @@
   :reports: # Specify one or more reports to generate.
     # Make an HTML summary report.
     - HtmlBasic
-    # - HtmlDetailed
+    - HtmlDetailed
     # - Text
     # - Cobertura
     # - SonarQube

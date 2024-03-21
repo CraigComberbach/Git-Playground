@@ -210,3 +210,18 @@ void test_Button_Return_Object_AlreadyReturned(void)
 
 	TEST_ASSERT_TRUE(ReturnedValue == EPERM);
 }
+
+void test_Button_Reset_Object_HappyPath(void)
+{
+	ReturnedValue = Button_Reset_Object(ButtonObject);
+
+	TEST_ASSERT_TRUE(ReturnedValue == SUCCESS);
+}
+
+void test_Button_Reset_Object_SelfIsNull(void)
+{
+	Button_Return_Object(&ButtonObject);
+	ReturnedValue = Button_Reset_Object(ButtonObject);
+
+	TEST_ASSERT_TRUE(ReturnedValue == EPERM);
+}
