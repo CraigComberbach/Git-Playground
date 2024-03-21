@@ -15,7 +15,8 @@
 			#define BREAKPOINT() __asm__ __volatile__("int3")
 		#endif
 	#else
-		#error "Unsupported compiler"
+		#warning "The Breakpoint library does not support this compiler"
+		#define BREAKPOINT() ((void)0)
 	#endif
 
 	#define BREAKPOINT_IF_TRUE(condition) \
