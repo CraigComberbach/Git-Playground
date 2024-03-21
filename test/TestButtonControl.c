@@ -40,11 +40,13 @@ void setUp(void)
 	Happy_ThresholdForPress_mS = 5;
 	Happy_ThresholdForLongPress_mS = 7;
 	Happy_DefaultState = NORMALLY_LOW;
-	ButtonObject = NULL;
+
+	Button_Aquire_Object(&ButtonObject, Happy_ButtonID);
 }
 
 void tearDown(void)
 {
+	Button_Return_Object(&ButtonObject);
 }
 
 void test_Initialize_Button_HappyPath(void)
@@ -150,30 +152,29 @@ void test_Initialize_Button_LongpressThresholdIsGreaterThanPressThreshold(void)
 
 void test_Button_Aquire_Object_HappyPath(void)
 {
-	TEST_ASSERT_NULL(ButtonObject);
+	Button_Return_Object(&ButtonObject);
 	ReturnedValue = Button_Aquire_Object(&ButtonObject, Happy_ButtonID);
 
 	TEST_ASSERT_NOT_NULL(ButtonObject);
 	TEST_ASSERT_TRUE(ReturnedValue == SUCCESS);
-	Button_Return_Object(&ButtonObject);
 }
 
 void test_Button_Aquire_Object_InvalidButtonID_Low(void)
 {
+	Button_Return_Object(&ButtonObject);
 	ReturnedValue = Button_Aquire_Object(&ButtonObject, -1);
 
 	TEST_ASSERT_NULL(ButtonObject);
 	TEST_ASSERT_TRUE(ReturnedValue == ERANGE);
-	Button_Return_Object(&ButtonObject);
 }
 
 void test_Button_Aquire_Object_InvalidButtonID_High(void)
 {
+	Button_Return_Object(&ButtonObject);
 	ReturnedValue = Button_Aquire_Object(&ButtonObject, NUMBER_OF_BUTTON_OBJECTS);
 
 	TEST_ASSERT_NULL(ButtonObject);
 	TEST_ASSERT_TRUE(ReturnedValue == ERANGE);
-	Button_Return_Object(&ButtonObject);
 }
 
 void test_Button_Aquire_Object_ButtonObjectNotNull(void)
@@ -183,9 +184,7 @@ void test_Button_Aquire_Object_ButtonObjectNotNull(void)
 
 	ReturnedValue = Button_Aquire_Object(&LocalButtonObject, Happy_ButtonID);
 
-	TEST_ASSERT_NULL(ButtonObject);
 	TEST_ASSERT_TRUE(ReturnedValue == EINVAL);
-	Button_Return_Object(&ButtonObject);
 }
 
 void test_Button_Aquire_Object_AlreadyOwned(void)
@@ -195,12 +194,10 @@ void test_Button_Aquire_Object_AlreadyOwned(void)
 	ReturnedValue = Button_Aquire_Object(&ButtonObject, Happy_ButtonID);
 
 	TEST_ASSERT_TRUE(ReturnedValue == EINVAL);
-	Button_Return_Object(&ButtonObject);
 }
 
 void test_Button_Return_Object_HappyPath(void)
 {
-	ReturnedValue = Button_Aquire_Object(&ButtonObject, Happy_ButtonID);
 	ReturnedValue = Button_Return_Object(&ButtonObject);
 
 	TEST_ASSERT_TRUE(ReturnedValue == SUCCESS);
@@ -208,7 +205,6 @@ void test_Button_Return_Object_HappyPath(void)
 
 void test_Button_Return_Object_AlreadyReturned(void)
 {
-	Button_Aquire_Object(&ButtonObject, Happy_ButtonID);
 	Button_Return_Object(&ButtonObject);
 	ReturnedValue = Button_Return_Object(&ButtonObject);
 
